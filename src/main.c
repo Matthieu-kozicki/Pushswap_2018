@@ -1,24 +1,13 @@
 /*
 ** EPITECH PROJECT, 2018
-** push
+** pushswap
 ** File description:
-** swap that
+** the main
 */
 
 #include "my.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-void print_list(list_t *l_a)
-{
-    list_t *here = l_a;
-
-    while (here != NULL) {
-        my_put_nbr(here->nb);
-        my_putchar('\n');
-        here = here->next;
-    }
-}
 
 void help()
 {
@@ -27,65 +16,51 @@ void help()
     my_putstr(" positive or negative numbers\n");
 }
 
-int check_sort(list_t *l_a)
+void add_to_array(int *l_a, int nb, int count)
 {
-    list_t *here = l_a;
-    int now = 0;
-    int next = 0;
+    l_a[count] = nb;
+}
 
-    while (here->next != NULL) {
-        now = here->nb;
-        next = here->next->nb;
-        if (now < next) {
-            here = here->next;
-        }
+void print_array(int *array, info_t *here)
+{
+    int i = 0;
+
+    while (i < here->len) {
+        my_put_nbr(array[i]);
+        my_putchar(' ');
+        i++;
+    }
+}
+
+int already_sorted(int *l_a, info_t *here)
+{
+    int i = 0;
+
+    while (i < here->len - 1) {
+        if (l_a[i] < l_a[i + 1])
+            i++;
         else
             return (2);
-    }
+        }
     return (1);
 }
 
-void add_list(list_t *l_a, int elem)
+int arrayed(int arc, char **arg)
 {
-    list_t *here = l_a;
+    int len = arc - 1;
+    int *l_a = malloc(sizeof(int) * len - 1);
+    info_t here = {len, len};
+    int count = 0;
 
-    while(here->next != NULL) {
-        here = here->next;
+    for (int j = 1;j < arc;j++) {
+        add_to_array(l_a, my_getnbr(arg[j]), count);
+        count++;
     }
-    here->next = malloc(sizeof(list_t));
-    here->next->nb = elem;
-    here->next->next = NULL;
-}
-
-int sort(list_t *l_a, list_t *l_b)
-{
-    if (check_sort(l_a) == 1) {
+    if (already_sorted(l_a, &here) == 1) {
         my_putchar('\n');
         return (0);
     }
-    my_putchar('i');
-}
-
-int list(int arc, char **arg)
-{
-    int j = 2;
-    list_t *l_a = NULL;
-    list_t *l_b = NULL;
-
-    l_a = malloc(sizeof(list_t));
-    if (l_a == NULL)
-        return (1);
-    l_a->nb = my_getnbr(arg[1]);
-    l_a->next = NULL;
-    while (j < arc) {
-        add_list(l_a, my_getnbr(arg[j]));
-        j = j + 1;
-    }
-    l_b = malloc(sizeof(l_b));
-    //print_list(l_a);
-    if (sort(l_a, l_b) == 84)
-        return (84);
-    return (0);
+    return (sorted(l_a, &here));
 }
 
 int main(int arc, char **arg)
@@ -100,8 +75,9 @@ int main(int arc, char **arg)
     }
     if (arc == 2) {
         my_putchar ('\n');
-        return (0);
+	return (0);
     }
-    i = list(arc, arg);
+    i = arrayed(arc, arg);
     return (i);
 }
+
