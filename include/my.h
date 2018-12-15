@@ -30,6 +30,10 @@ void ra(int *l_a, info_t *here);
 int sorted(int *l_a, info_t *here);
 int already_sorted(int *l_a, info_t *here);
 
+//array
+void add_to_array(int *l_a, int nb, int count);
+void help();
+
 //print to terminal
 void my_putchar(char c);
 int my_put_nbr(int nb);
